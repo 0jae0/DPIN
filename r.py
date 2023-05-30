@@ -7,7 +7,7 @@ app = Flask(__name__)
 def internal_error(error):
     return jsonify({"error": "Internal Server Error"}), 500
 def validate_input(input_string):
-    if re.match("^[A-Za-z0-9]*$", input_string):
+    if re.match("^[A-Za-z0-9\uac00-\ud7a3]*$", input_string):
         return True
     else:
         return False
