@@ -23,6 +23,11 @@ education_offices = {
     "S10": ["경남", "경상남도", "경남교육청", "경상남도교육청"],
     "T10": ["제주", "제주도", "제주특별자치시", "제주교육청", "제주도교육청", "제주특별자치시교육청", "제주특별자치도", "서귀포"],
 }
+def get_code_from_name(name):
+    for code, names in education_offices.items():
+        if name in names:
+            return code
+    return None
 
 @app.errorhandler(500)
 def internal_error(error):
@@ -34,9 +39,8 @@ def validate_input(input_string):
         return False
 @app.route('/schedule/<string:EDU_NAME>/<string:SC_NAME>')
 def sc(EDU_NAME, SC_NAME):
-    if EDU_NAME in education_offices:
-        SC_CODE = education_offices[EDU_NAME]
-    else:
+    SC_CODE = get_code_from_name(EDU_NAME)
+    if SC_CODE is None:
         return "Invalid input"
     if validate_input(SC_CODE) and validate_input(SC_NAME):
         return mya.schedule(SC_CODE, SC_NAME)
@@ -44,9 +48,8 @@ def sc(EDU_NAME, SC_NAME):
         return "Invalid input"
 @app.route('/timetable/<string:EDU_NAME>/<string:SC_NAME>')
 def tt(EDU_NAME, SC_NAME):
-    if EDU_NAME in education_offices:
-        SC_CODE = education_offices[EDU_NAME]
-    else:
+    SC_CODE = get_code_from_name(EDU_NAME)
+    if SC_CODE is None:
         return "Invalid input"
     if validate_input(SC_CODE) and validate_input(SC_NAME):
         return mya.timetable(SC_CODE, SC_NAME)
@@ -54,9 +57,8 @@ def tt(EDU_NAME, SC_NAME):
         return "Invalid input"
 @app.route('/meal/<string:EDU_NAME>/<string:SC_NAME>')
 def ml(EDU_NAME, SC_NAME):
-    if EDU_NAME in education_offices:
-        SC_CODE = education_offices[EDU_NAME]
-    else:
+    SC_CODE = get_code_from_name(EDU_NAME)
+    if SC_CODE is None:
         return "Invalid input"
     if validate_input(SC_CODE) and validate_input(SC_NAME):
         return mya.meal(SC_CODE, SC_NAME)
