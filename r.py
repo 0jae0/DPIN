@@ -9,10 +9,10 @@ def sc():
 @app.route('/timetable')
 def tt():
     return mya.timetable()
-5
+
 @app.route('/meal')
 def ml():
     return mya.meal()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(host='0.0.0.0', port=32767)
