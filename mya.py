@@ -48,7 +48,7 @@ def timetable(SC_CODE, SC_NAME):
     SD_SCHUL_CODE = info(SC_CODE, SC_NAME)
     result = str("")
     ymd=checkymd()
-    url = "https://open.neis.go.kr/hub/misTimetable?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + SC_CODE + "&SD_SCHUL_CODE="  + SD_SCHUL_CODE  +   + "&GRADE=3&CLASS_NM=4&ALL_TI_YMD=" + ymd + "&Type=json"
+    url = "https://open.neis.go.kr/hub/misTimetable?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + SC_CODE + "&SD_SCHUL_CODE="  + SD_SCHUL_CODE + "&GRADE=3&CLASS_NM=4&ALL_TI_YMD=" + ymd + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
     rows = json_data['misTimetable'][1]['row']
@@ -60,7 +60,7 @@ def meal(SC_CODE, SC_NAME):
     SD_SCHUL_CODE = info(SC_CODE, SC_NAME)
     result = str("")
     ymd=checkymd()
-    url = "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + SC_CODE + "&SD_SCHUL_CODE="  + SD_SCHUL_CODE  +   + "&MLSV_YMD=" + ymd + "&Type=json"
+    url = "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + SC_CODE + "&SD_SCHUL_CODE="  + SD_SCHUL_CODE + "&MLSV_YMD=" + ymd + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
     rows = json_data['mealServiceDietInfo'][1]['row']
