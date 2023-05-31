@@ -39,7 +39,7 @@ def schedule(SC_CODE, SC_NAME):
     url = "https://open.neis.go.kr/hub/SchoolSchedule?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + SC_CODE + "&SD_SCHUL_CODE="  + SD_SCHUL_CODE + "&AA_YMD=" + str(ym) + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
-    rows = json_da5ta['SchoolSchedule'][1]['row']
+    rows = json_data['SchoolSchedule'][1]['row']
     for row in rows:
         result += "{" + f'"{row["AA_YMD"]}" : "{row["EVENT_NM"]}"' + "}"
     return result
