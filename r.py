@@ -43,7 +43,7 @@ def sc(EDU_NAME, SC_NAME):
     if SC_CODE is None:
         return "Invalid input"
     if validate_input(SC_CODE) and validate_input(SC_NAME):
-        return mya.schedule(SC_CODE, SC_NAME)
+        return jsonify(mya.schedule(SC_CODE, SC_NAME))
     else:
         return "Invalid input"
 @app.route('/timetable/<string:EDU_NAME>/<string:SC_NAME>')
@@ -52,7 +52,7 @@ def tt(EDU_NAME, SC_NAME):
     if SC_CODE is None:
         return "Invalid input"
     if validate_input(SC_CODE) and validate_input(SC_NAME):
-        return mya.timetable(SC_CODE, SC_NAME)
+        return jsonify(mya.timetable(SC_CODE, SC_NAME))
     else:
         return "Invalid input"
 @app.route('/meal/<string:EDU_NAME>/<string:SC_NAME>')
@@ -61,7 +61,7 @@ def ml(EDU_NAME, SC_NAME):
     if SC_CODE is None:
         return "Invalid input"
     if validate_input(SC_CODE) and validate_input(SC_NAME):
-        return mya.meal(SC_CODE, SC_NAME)
+        return jsonify(mya.meal(SC_CODE, SC_NAME))
     else:
         return "Invalid input"
 
