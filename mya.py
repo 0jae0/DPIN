@@ -39,9 +39,9 @@ def schedule(SC_CODE, SC_NAME):
     url = "https://open.neis.go.kr/hub/SchoolSchedule?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + SC_CODE + "&SD_SCHUL_CODE="  + SD_SCHUL_CODE + "&AA_YMD=" + str(ym) + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
-    rows = json_data['SchoolSchedule'][1]['row']
+    rows = json_da5ta['SchoolSchedule'][1]['row']
     for row in rows:
-        result += "{" + f'{row["AA_YMD"]} : {row["EVENT_NM"]} ' + "}"
+        result += "{" + f'"{row["AA_YMD"]}" : "{row["EVENT_NM"]}"' + "}"
     return result
 
 def timetable(SC_CODE, SC_NAME):
@@ -53,7 +53,7 @@ def timetable(SC_CODE, SC_NAME):
     json_data = json.loads(response.text)
     rows = json_data['misTimetable'][1]['row']
     for row in rows:
-        result += "{" + f'{row["PERIO"]} : {row["ITRT_CNTNT"]} : {row["GRADE"]}학년 {row["CLASS_NM"]} ' + "}"
+        result += "{" + f'"{row["PERIO"]}" : "{row["ITRT_CNTNT"]}" : "{row["GRADE"]}학년" "{row["CLASS_NM"]}"' + "}"
     return result
 
 def meal(SC_CODE, SC_NAME):
@@ -65,5 +65,5 @@ def meal(SC_CODE, SC_NAME):
     json_data = json.loads(response.text)
     rows = json_data['mealServiceDietInfo'][1]['row']
     for row in rows:
-        result += "{" + f'{row["MMEAL_SC_NM"]} : {row["CAL_INFO"]} : {row["DDISH_NM"].replace("<br/>", "").replace("11", "복숭아.").replace("10.", "돼지고기.").replace("12.", "토마토.").replace("13.", "아황산류.").replace("14.", "호두.").replace("15.", "닭고기.").replace("16.", "쇠고기.").replace("17.", "오징어.").replace("18.", "조개류.").replace("1.", "난류.").replace("2.", "우유.").replace("3.", "메밀.").replace("4.", "땅콩.").replace("5.", "대두.").replace("6.", "밀.").replace("7.", "고등어.").replace("8.", "게.").replace("9.", "새우.")} ' + "}"
+        result += "{" + f'"{row["MMEAL_SC_NM"]}" : "{row["CAL_INFO"]}" : "{row["DDISH_NM"].replace("<br/>", "").replace("11", "복숭아.").replace("10.", "돼지고기.").replace("12.", "토마토.").replace("13.", "아황산류.").replace("14.", "호두.").replace("15.", "닭고기.").replace("16.", "쇠고기.").replace("17.", "오징어.").replace("18.", "조개류.").replace("1.", "난류.").replace("2.", "우유.").replace("3.", "메밀.").replace("4.", "땅콩.").replace("5.", "대두.").replace("6.", "밀.").replace("7.", "고등어.").replace("8.", "게.").replace("9.", "새우.")}"' + "}"
     return result
