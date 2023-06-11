@@ -43,12 +43,15 @@ def schedule(sc_code, sc_name):
     print(sd_schul_code)
     result = str("")
     ym = checkym()  # yearmonth get
-    url = "https://open.neis.go.kr/hub/SchoolSchedule?KEY=" + key + "&ATPT_OFCDC_sc_code=" + sc_code + "&SD_SCHUL_CODE=" + sd_schul_code + "&AA_YMD=" + str(
+    url = "https://open.neis.go.kr/hub/SchoolSchedule?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + sc_code + "&SD_SCHUL_CODE=" + sd_schul_code + "&AA_YMD=" + str(
         ym) + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
     rows = json_data['SchoolSchedule'][1]['row']
     result += "{"
+    atpt_metropolitan_name = [""]
+    for row in rows:
+        atpt_metropolitan_name += f'"{row["ATPT_OFCDC_SC_NM"]}'
     for row in rows:
         result += f'"{row["AA_YMD"]} {row["EVENT_NM"]}", '
     result += "}"
@@ -83,5 +86,9 @@ def meal(sc_code, sc_name):
         result += "{" + f'"식사구분" : "{row["MMEAL_SC_NM"]}", "메뉴" : "{row["DDISH_NM"].replace("<br/>", "").replace("11", "복숭아.").replace("10.", "돼지고기.").replace("12.", "토마토.").replace("13.", "아황산류.").replace("14.", "호두.").replace("15.", "닭고기.").replace("16.", "쇠고기.").replace("17.", "오징어.").replace("18.", "조개류.").replace("1.", "난류.").replace("2.", "우유.").replace("3.", "메밀.").replace("4.", "땅콩.").replace("5.", "대두.").replace("6.", "밀.").replace("7.", "고등어.").replace("8.", "게.").replace("9.", "새우.").replace(" ", "").replace(")", ") ")}", "칼로리" : "{row["CAL_INFO"]}"' + "}"
     return result
 
-
-print("정상")
+if schedule("B10", "서울대학교사범대학부설중학교") != "Internal Server Error":
+    if timetable("B10", "서울대학교사범대학부설중학교") != "Internal Server Error":
+        if meal("B10", "서울대학교사범대학부설중학교") != "Internal Server Error":
+            print("BACK READY")
+else:
+    exit()

@@ -76,6 +76,6 @@ def ml(edu_name, sc_name):
     else:
         return "Invalid input"
 
-
 if __name__ == "__main__":
+    print("FLASK READY")
     app.run(host='0.0.0.0', port=32767)
