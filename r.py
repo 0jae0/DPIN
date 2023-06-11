@@ -23,47 +23,59 @@ education_offices = {
     "S10": ["경남", "경상남도", "경남교육청", "경상남도교육청"],
     "T10": ["제주", "제주도", "제주특별자치시", "제주교육청", "제주도교육청", "제주특별자치시교육청", "제주특별자치도", "서귀포"],
 }
+
+
 def get_code_from_name(name):
     for code, names in education_offices.items():
         if name in names:
             return code
     return None
 
+
 @app.errorhandler(500)
 def internal_error(error):
     return jsonify({"error": "Internal Server Error"}), 500
+
+
 def validate_input(input_string):
     if re.match("^[A-Za-z0-9\uac00-\ud7a3]*$", input_string):
         return True
     else:
         return False
-@app.route('/schedule/<string:EDU_NAME>/<string:SC_NAME>')
-def sc(EDU_NAME, SC_NAME):
-    SC_CODE = get_code_from_name(EDU_NAME)
-    if SC_CODE is None:
+
+
+@app.route('/schedule/<string:edu_name>/<string:sc_name>')
+def sc(edu_name, sc_name):
+    sc_code = get_code_from_name(edu_name)
+    if sc_code is None:
         return "Invalid input"
-    if validate_input(SC_CODE) and validate_input(SC_NAME):
-        return jsonify(mya.schedule(SC_CODE, SC_NAME))
+    if validate_input(sc_code) and validate_input(sc_name):
+        return jsonify(mya.schedule(sc_code, sc_name))
     else:
         return "Invalid input"
-@app.route('/timetable/<string:EDU_NAME>/<string:SC_NAME>')
-def tt(EDU_NAME, SC_NAME):
-    SC_CODE = get_code_from_name(EDU_NAME)
-    if SC_CODE is None:
+
+
+@app.route('/timetable/<string:edu_name>/<string:sc_name>')
+def tt(edu_name, sc_name):
+    sc_code = get_code_from_name(edu_name)
+    if sc_code is None:
         return "Invalid input"
-    if validate_input(SC_CODE) and validate_input(SC_NAME):
-        return jsonify(mya.timetable(SC_CODE, SC_NAME))
+    if validate_input(sc_code) and validate_input(sc_name):
+        return jsonify(mya.timetable(sc_code, sc_name))
     else:
         return "Invalid input"
-@app.route('/meal/<string:EDU_NAME>/<string:SC_NAME>')
-def ml(EDU_NAME, SC_NAME):
-    SC_CODE = get_code_from_name(EDU_NAME)
-    if SC_CODE is None:
+
+
+@app.route('/meal/<string:edu_name>/<string:sc_name>')
+def ml(edu_name, sc_name):
+    sc_code = get_code_from_name(edu_name)
+    if sc_code is None:
         return "Invalid input"
-    if validate_input(SC_CODE) and validate_input(SC_NAME):
-        return jsonify(mya.meal(SC_CODE, SC_NAME))
+    if validate_input(sc_code) and validate_input(sc_name):
+        return jsonify(mya.meal(sc_code, sc_name))
     else:
         return "Invalid input"
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=32767)
