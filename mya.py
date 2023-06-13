@@ -9,7 +9,7 @@ keyfile.close()
 
 def info(sc_code, sc_name):
     global sd_schul_code
-    url = "https://open.neis.go.kr/hub/schoolInfo?KEY=" + key + "&ATPT_OFCDC_sc_code=" + sc_code + "&SCHUL_NM=" + sc_name + "&Type=json"
+    url = "https://open.neis.go.kr/hub/schoolInfo?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + sc_code + "&SCHUL_NM=" + sc_name + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
     rows = json_data['schoolInfo'][1]['row']
@@ -40,7 +40,6 @@ def checkymd():
 
 def schedule(sc_code, sc_name):
     sd_schul_code = info(sc_code, sc_name)
-    print(sd_schul_code)
     result = str("")
     ym = checkym()  # yearmonth get
     url = "https://open.neis.go.kr/hub/SchoolSchedule?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + sc_code + "&SD_SCHUL_CODE=" + sd_schul_code + "&AA_YMD=" + str(
@@ -49,13 +48,9 @@ def schedule(sc_code, sc_name):
     json_data = json.loads(response.text)
     rows = json_data['SchoolSchedule'][1]['row']
     result += "{"
-    atpt_metropolitan_name = [""]
-    for row in rows:
-        atpt_metropolitan_name += f'"{row["ATPT_OFCDC_SC_NM"]}'
     for row in rows:
         result += f'"{row["AA_YMD"]} {row["EVENT_NM"]}", '
     result += "}"
-    print(result)
     return result
 
 
@@ -63,7 +58,7 @@ def timetable(sc_code, sc_name):
     SD_SCHUL_CODE = info(sc_code, sc_name)
     result = str("")
     ymd = checkymd()
-    url = "https://open.neis.go.kr/hub/misTimetable?KEY=" + key + "&ATPT_OFCDC_sc_code=" + sc_code + "&SD_SCHUL_CODE=" + SD_SCHUL_CODE + "&GRADE=3&CLASS_NM=4&ALL_TI_YMD=" + ymd + "&Type=json"
+    url = "https://open.neis.go.kr/hub/misTimetable?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + sc_code + "&SD_SCHUL_CODE=" + SD_SCHUL_CODE + "&GRADE=3&CLASS_NM=4&ALL_TI_YMD=" + ymd + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
     rows = json_data['misTimetable'][1]['row']
@@ -78,7 +73,7 @@ def meal(sc_code, sc_name):
     SD_SCHUL_CODE = info(sc_code, sc_name)
     result = str("")
     ymd = checkymd()
-    url = "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=" + key + "&ATPT_OFCDC_sc_code=" + sc_code + "&SD_SCHUL_CODE=" + SD_SCHUL_CODE + "&MLSV_YMD=" + ymd + "&Type=json"
+    url = "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + sc_code + "&SD_SCHUL_CODE=" + SD_SCHUL_CODE + "&MLSV_YMD=" + ymd + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
     rows = json_data['mealServiceDietInfo'][1]['row']
@@ -91,4 +86,4 @@ if schedule("B10", "서울대학교사범대학부설중학교") != "Internal Se
         if meal("B10", "서울대학교사범대학부설중학교") != "Internal Server Error":
             print("BACK READY")
 else:
-    exit()
+    exit(1)

@@ -1,6 +1,7 @@
 from flask import *
 import mya
 import re
+import time
 
 app = Flask(__name__)
 
@@ -78,4 +79,6 @@ def ml(edu_name, sc_name):
 
 if __name__ == "__main__":
     print("FLASK READY")
-    app.run(host='0.0.0.0', port=32767)
+    time.sleep(0.3)
+    print("IGNITION")
+app.run(host='0.0.0.0', port=32767)
