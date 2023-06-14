@@ -1,9 +1,12 @@
 from flask import *
 import mya
+import random
 import re
 import time
 
 app = Flask(__name__)
+
+url_mapping = {}
 
 education_offices = {
     "B10": ["서울", "서울시", "서울교육청", "서울시교육청", "서울특별시", "서울특별시교육청"],
@@ -25,25 +28,21 @@ education_offices = {
     "T10": ["제주", "제주도", "제주특별자치시", "제주교육청", "제주도교육청", "제주특별자치시교육청", "제주특별자치도", "서귀포"],
 }
 
-
 def get_code_from_name(name):
     for code, names in education_offices.items():
         if name in names:
             return code
     return None
 
-
 @app.errorhandler(500)
 def internal_error(error):
     return jsonify({"error": "Internal Server Error"}), 500
-
 
 def validate_input(input_string):
     if re.match("^[A-Za-z0-9\uac00-\ud7a3]*$", input_string):
         return True
     else:
         return False
-
 
 @app.route('/schedule/<string:edu_name>/<string:sc_name>')
 def sc(edu_name, sc_name):
@@ -55,7 +54,6 @@ def sc(edu_name, sc_name):
     else:
         return "Invalid input"
 
-
 @app.route('/timetable/<string:edu_name>/<string:sc_name>')
 def tt(edu_name, sc_name):
     sc_code = get_code_from_name(edu_name)
@@ -66,7 +64,6 @@ def tt(edu_name, sc_name):
     else:
         return "Invalid input"
 
-
 @app.route('/meal/<string:edu_name>/<string:sc_name>')
 def ml(edu_name, sc_name):
     sc_code = get_code_from_name(edu_name)
@@ -76,6 +73,27 @@ def ml(edu_name, sc_name):
         return jsonify(mya.meal(sc_code, sc_name))
     else:
         return "Invalid input"
+
+def generate_short_url():
+    short_url = str(random.randint(100, 999))
+    return short_url
+
+@app.route('/<short_url>')
+def redirect_to_url(short_url):
+    if short_url in url_mapping:
+        return redirect(url_mapping[short_url])
+    return 'URL not found'
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        original_url = request.form['url']
+        short_url = generate_short_url()
+        while short_url in url_mapping:
+            short_url = generate_short_url()
+        url_mapping[short_url] = original_url
+        return render_template('index.html', short_url=short_url)
+    return render_template('index.html')
 
 if __name__ == "__main__":
     print("FLASK READY")
