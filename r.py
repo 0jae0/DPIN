@@ -6,8 +6,6 @@ import time
 
 app = Flask(__name__)
 
-url_mapping = {}
-
 education_offices = {
     "B10": ["서울", "서울시", "서울교육청", "서울시교육청", "서울특별시", "서울특별시교육청"],
     "C10": ["부산", "부산광역시", "부산시", "부산교육청", "부산광역시교육청"],
@@ -73,27 +71,6 @@ def ml(edu_name, sc_name):
         return jsonify(mya.meal(sc_code, sc_name))
     else:
         return "Invalid input"
-
-def generate_short_url():
-    short_url = str(random.randint(100, 999))
-    return short_url
-
-@app.route('/<short_url>')
-def redirect_to_url(short_url):
-    if short_url in url_mapping:
-        return redirect(url_mapping[short_url])
-    return 'URL not found'
-
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method == 'POST':
-        original_url = request.form['url']
-        short_url = generate_short_url()
-        while short_url in url_mapping:
-            short_url = generate_short_url()
-        url_mapping[short_url] = original_url
-        return render_template('index.html', short_url=short_url)
-    return render_template('index.html')
 
 if __name__ == "__main__":
     print("FLASK READY")
