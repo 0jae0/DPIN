@@ -1,6 +1,7 @@
 import requests
 import json
 import datetime
+import random
 
 keyfile = open('key.txt', 'r')
 key = keyfile.read()
@@ -35,7 +36,7 @@ def checkymd():
 def schedule(SC_CODE, SC_NAME):
     SD_SCHUL_CODE = info(SC_CODE, SC_NAME)
     result = str("")
-    ym = checkym()  # 'ym' 값을 여기에서 받습니다.
+    ym = checkym()
     url = "https://open.neis.go.kr/hub/SchoolSchedule?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + SC_CODE + "&SD_SCHUL_CODE="  + SD_SCHUL_CODE + "&AA_YMD=" + str(ym) + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
@@ -67,9 +68,28 @@ def meal(SC_CODE, SC_NAME):
     url = "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=" + key + "&ATPT_OFCDC_SC_CODE=" + SC_CODE + "&SD_SCHUL_CODE="  + SD_SCHUL_CODE + "&MLSV_YMD=" + ymd + "&Type=json"
     response = requests.get(url)
     json_data = json.loads(response.text)
+    print(json_data)
     rows = json_data['mealServiceDietInfo'][1]['row']
     for row in rows:
         result += "{" + f'"식사구분" : "{row["MMEAL_SC_NM"]}", "메뉴" : "{row["DDISH_NM"].replace("<br/>", "").replace("11", "복숭아.").replace("10.", "돼지고기.").replace("12.", "토마토.").replace("13.", "아황산류.").replace("14.", "호두.").replace("15.", "닭고기.").replace("16.", "쇠고기.").replace("17.", "오징어.").replace("18.", "조개류.").replace("1.", "난류.").replace("2.", "우유.").replace("3.", "메밀.").replace("4.", "땅콩.").replace("5.", "대두.").replace("6.", "밀.").replace("7.", "고등어.").replace("8.", "게.").replace("9.", "새우.").replace(" ", "").replace(")", ") ")}", "칼로리" : "{row["CAL_INFO"]}"' + "}"
     return result
 
-print("정상")
+def hantemp():
+    url = "https://api.hangang.msub.kr/"
+    response = requests.get(url)
+    json_data = json.loads(response.text)
+    #{'station': '노량진', 'status': 'success', 'temp': '20.0', 'time': '12:00', 'type': 'hangangAPI'}
+    result = str("")
+    result += "{" + f'"강이름" : "{json_data["station"]}", "온도" : "{json_data["temp"]}", "시간" : "{json_data["time"]}", "명언" : ' + goodtext() + "}"
+    return result
+
+def goodtext():
+    r = random.randrange(1, 11)
+    if r == 1:
+        return("인생 살만한듯?")
+    if r == 2:
+        return("힘내라")
+    if r == 3:
+        return("알빠노")
+    else:
+        return("나머지는 귀찮은데 일단 API 이따 씀")

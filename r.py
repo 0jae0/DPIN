@@ -29,10 +29,10 @@ def get_code_from_name(name):
             return code
     return None
 
-@app.errorhandler(500)
+@app.errorhandler(500) # 오류처리
 def internal_error(error):
     return jsonify({"error": "Internal Server Error"}), 500
-def validate_input(input_string):
+def validate_input(input_string): # 입력값 확인
     if re.match("^[A-Za-z0-9\uac00-\ud7a3]*$", input_string):
         return True
     else:
@@ -65,5 +65,9 @@ def ml(EDU_NAME, SC_NAME):
     else:
         return "Invalid input"
 
+@app.route('/hantemp')
+def hantemp():
+    return jsonify(mya.hantemp())
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=32767)
+    app.run(host='127.0.0.1', port=32767)
