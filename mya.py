@@ -93,3 +93,4 @@ def goodtext():
         return("알빠노")
     else:
         return("나머지는 귀찮은데 일단 API 이따 씀")
+    # 명언을 딱 갖다주는 API가 업어서 일단 이렇게 랜덤으로 주기는 했는데 나중에 API로 줄거임
